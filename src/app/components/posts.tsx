@@ -9,7 +9,7 @@ export default function Posts() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/posts');
+        const response = await fetch('http://localhost:3000/registrations/index');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -23,8 +23,6 @@ export default function Posts() {
 
     fetchData(); // Call fetchData here
   }, []);
-
-
 
   return (
     <main>
