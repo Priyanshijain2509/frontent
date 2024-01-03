@@ -1,7 +1,12 @@
+"use client"
+
 import Link from 'next/link';
+import Posts from './components/posts';
+import { useContext } from 'react';
+import { UserContext } from '@/context/UserContext';
 
 const WelcomePage = () => {
-  const userSignedIn = false;
+  const { user } = useContext(UserContext);
 
   return (
     <div className='welcome-page'>
@@ -21,12 +26,17 @@ const WelcomePage = () => {
         Redmine is written using the Ruby on Rails framework. It is cross-platform
         and cross-database and supports 49 languages.
       </p>
-      {!userSignedIn && (
+      <Posts/>
+      {user ? (
+        <h1>Logged In</h1>
+      ) : (
         <div className='welcome-btn'>
           <Link href='/users/sign_up'>Register</Link>
         </div>
       )}
     </div>
+
+
   );
 };
 

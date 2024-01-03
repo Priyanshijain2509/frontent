@@ -1,17 +1,21 @@
 "use client";
 
-import { useState } from 'react';
-import { redirect } from 'next/navigation';
+import { useState, useContext } from 'react';
+import { useRouter } from 'next/navigation';
+import { UserContext } from '@/context/UserContext';
+import Cookies from 'js-cookie';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [token, setToken] = useState('');
+  const router = useRouter();
+  const { user, setUser } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Make an API request to handle the login logic
     try {
       const response = await fetch('http://localhost:3000/login', {
         method: 'POST',
@@ -22,8 +26,17 @@ export default function SignIn() {
       });
 
       if (response.ok) {
-        console.log('Login successful');
-        redirect('/products')
+        const responseData = await response.json();
+        const newToken = responseData.token;
+        const current_user = responseData.user;
+        Cookies.set('token', newToken);
+        Cookies.set('current_user', current_user );
+
+        // setUser(responseData.user);
+        // setToken(newToken);
+
+        router.push('/products');
+
       } else {
         const errorData = await response.json();
         console.error('Login failed:', errorData);
@@ -84,6 +97,7 @@ export default function SignIn() {
           <button type='submit' className='custom-input'>Login</button>
         </div>
       </form>
+
     </div>
   );
 }
