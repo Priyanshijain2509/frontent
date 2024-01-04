@@ -1,4 +1,5 @@
 import { UserProvider } from '@/context/UserContext';
+import './globals.css'
 
 export const metadata = {
   title: 'Next.js',

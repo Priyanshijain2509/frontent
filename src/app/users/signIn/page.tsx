@@ -29,7 +29,7 @@ export default function SignIn() {
         const responseData = await response.json();
         const newToken = responseData.token;
         const current_user = responseData.user;
-        Cookies.set('token', newToken);
+        Cookies.set('auth_token', newToken);
         Cookies.set('current_user', current_user );
 
         // setUser(responseData.user);

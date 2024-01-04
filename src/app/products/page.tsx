@@ -14,7 +14,7 @@ export default function Products() {
   const handleLogout = async () => {
     try {
       if (isCurrentUserPresent()) {
-        const token = Cookies.get('token');
+        const token = Cookies.get('auth_token');
 
         console.log(token);
         const response = await fetch('http://localhost:3000/logout', {
@@ -25,10 +25,10 @@ export default function Products() {
         });
 
         if (response.ok) {
-          Cookies.remove('token');
+          Cookies.remove('auth_token');
           Cookies.remove('current_user');
           console.log('Logout successful..');
-          router.push('/users/sign_in');
+          router.push('/users/signIn');
         } else {
           const errorData = await response.json();
           console.error('Logout failed:', errorData);
@@ -50,7 +50,7 @@ export default function Products() {
         </button>
       </div>
       <h2>Product List</h2>
-      {Cookies.get('token') ? (
+      {Cookies.get('auth_token') ? (
         <h2>{isCurrentUserPresent() ? Cookies.getJSON('current_user').email : ''}</h2>
       ) : (
         <h1>Not Logged In</h1>

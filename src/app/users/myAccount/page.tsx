@@ -1,36 +1,71 @@
-import { useState } from "react";
+'use client'
+
+import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 
+interface UserData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  passwordConfirmation: string;
+  language: string;
+  nickName: string;
+}
+
 export default function MyAccount() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  const [language, setLanguage] = useState("English");
-  const [nickName, setNickName] = useState("");
+  const [userData, setUserData] = useState<UserData>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    passwordConfirmation: "",
+    language: "English",
+    nickName: "",
+  });
 
-    const router = useRouter();
+  const isCurrentUserPresent = () => {
+    const currentUser = Cookies.getJSON('current_user');
+    return currentUser !== undefined;
+  };
 
-    const handleSubmit = async (e) => {
+  const router = useRouter();
+
+  useEffect(() => {
+    const currentUser = Cookies.getJSON('current_user');
+    if (currentUser) {
+      setUserData({
+        firstName: currentUser.first_name,
+        lastName: currentUser.last_name,
+        email: currentUser.email,
+        password: "",
+        passwordConfirmation: "",
+        language: currentUser.language || "English",
+        nickName: currentUser.nick_name ,
+      });
+    }
+  }, []);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setUserData((prevUserData) => ({ ...prevUserData, [name]: value }));
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-      const id = Cookies.getJSON("current_user").id;
-      const formData = {
-      first_name: firstName,
-      last_name: lastName,
-      email: email,
-      password: password,
-      password_confirmation: passwordConfirmation,
-      language: language,
-      nick_name: nickName,
+    const id = Cookies.getJSON("current_user").id;
+    const formData = {
+      user_id: id,
+      ...userData,
     };
 
     try {
-        const response = await fetch(`http://localhost:3000/users/${id}/update`, {
-        method: "POST",
+      const response = await fetch(`http://localhost:3000/users/${id}/update`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': Cookies.get('auth_token')
         },
         body: JSON.stringify(formData),
       });
@@ -46,70 +81,85 @@ export default function MyAccount() {
     }
   };
 
-    return (
-    <div>
-      <h1>My Account</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          First Name:
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-        </label>
+  return (
+    <>
+      { isCurrentUserPresent() ? (
+        <div>
+          <h1>My Account</h1>
+          <form onSubmit={handleSubmit}>
+            <label>
+              First Name:
+              <input
+                type="text"
+                name="firstName"
+                value={userData.firstName}
+                onChange={handleChange}
+              />
+            </label>
 
-        <label>
-          Last Name:
-          <input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-        </label>
+            <label>
+              Last Name:
+              <input
+                type="text"
+                name="lastName"
+                value={userData.lastName}
+                onChange={handleChange}
+              />
+            </label>
 
-        <label>
-          Email:
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </label>
+            <label>
+              Email:
+              <input
+                type="email"
+                name="email"
+                value={userData.email}
+                onChange={handleChange}
+              />
+            </label>
 
-        <label>
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
+            <label>
+              Password:
+              <input
+                type="password"
+                name="password"
+                value={userData.password}
+                onChange={handleChange}
+              />
+            </label>
 
-        <label>
-          Confirm Password:
-          <input
-            type="password"
-            value={passwordConfirmation}
-            onChange={(e) => setPasswordConfirmation(e.target.value)}
-          />
-        </label>
+            <label>
+              Confirm Password:
+              <input
+                type="password"
+                name="passwordConfirmation"
+                value={userData.passwordConfirmation}
+                onChange={handleChange}
+              />
+            </label>
 
-        <label>
-          Language:
-          <select value={language} onChange={(e) => setLanguage(e.target.value)}>
-            <option value="English">English</option>
-            <option value="Hindi">Hindi</option>
-          </select>
-        </label>
+            <label>
+              Language:
+              <select name="language" value={userData.language} onChange={handleChange}>
+                <option value="English">English</option>
+                <option value="Hindi">Hindi</option>
+              </select>
+            </label>
 
-        <label>
-          Nick Name:
-          <input type="text" value={nickName} onChange={(e) => setNickName(e.target.value)} />
-        </label>
+            <label>
+              Nick Name:
+              <input type="text" name="nickName" value={userData.nickName}
+                onChange={handleChange} />
+            </label>
 
-        <button type="submit">Update My Account</button>
-      </form>
-    </div>
+            <button type="submit">Update My Account</button>
+          </form>
+        </div>
+        ) : (
+        <div>
+          <h1>not logged in!</h1>
+        </div>
+        )
+      }
+    </>
   );
 }
