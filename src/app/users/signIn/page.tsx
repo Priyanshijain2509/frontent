@@ -31,12 +31,8 @@ export default function SignIn() {
         const current_user = responseData.user;
         Cookies.set('auth_token', newToken);
         Cookies.set('current_user', current_user );
-
-        // setUser(responseData.user);
-        // setToken(newToken);
-
-        router.push('/products');
-
+        const user_id = Cookies.getJSON('current_user').id;
+        router.push(`/users/${user_id}/projects`);
       } else {
         const errorData = await response.json();
         console.error('Login failed:', errorData);

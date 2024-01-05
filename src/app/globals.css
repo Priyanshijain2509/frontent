@@ -13,3 +13,25 @@
   padding: 1.5rem;
   text-align: justify;
 }
+h1{
+  font-size: 1.5rem;
+  color: #04364A;
+}
+.project-css{
+  margin: 1.5rem;
+  border: 1px solid #bbb;
+  border-radius: 0.8rem;
+  padding: 1rem;
+}
+.navbar{
+  color: white;
+  font-size: 0.8rem;
+}
+.ele-navbar{
+  margin: 0.3rem;
+}
+.second-navbar{
+  color: #1f4172;
+  background-color: #DAC0A3;
+/* #4F709C */
+}
