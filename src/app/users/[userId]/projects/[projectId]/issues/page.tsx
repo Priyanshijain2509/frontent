@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react';
-import Navbar from "@/app/navbar";
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 
@@ -53,8 +52,8 @@ export default function Issue({ params }) {
 
   return (
     <>
-      <Navbar />
       <Link href={`/users/${user_id}/projects/${projectId}/projectContributor`}>Add Project Contributor</Link>
+      <Link href={`/users/${user_id}/projects/${projectId}/issues/new`}>Add Issue</Link>
       {isCurrentUserPresent() ? (
         <>
           <h2>Issues</h2>
@@ -75,7 +74,7 @@ export default function Issue({ params }) {
                   <Link href={`issues/${issue.id}`}>
                     <td>{issue.id}</td>
                     <td>{issue.tracker}</td>
-                    <td>{/* Add status here */}</td>
+                    <td>{/* status here */}</td>
                     <td>{issue.subject}</td>
                     <td>{issue.category}</td>
                     <td>{new Date(issue.updated_at).toLocaleString()}</td>

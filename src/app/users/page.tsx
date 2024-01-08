@@ -12,7 +12,7 @@ export default function Users() {
 
   const handleLogout = async () => {
     try {
-      const token = Cookies.get('auth_token');
+      const token = Cookies.get('token');
       const response = await fetch('http://localhost:3000/logout', {
         method: 'DELETE',
         headers: {
@@ -23,7 +23,7 @@ export default function Users() {
       console.log('Logout response:', response);
 
       if (response.ok) {
-        Cookies.remove('auth_token');
+        Cookies.remove('token');
         Cookies.remove('current_user');
         console.log('Logout successful.');
         router.push('/users/signIn');

@@ -1,15 +1,20 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
-import Navbar from '@/app/navbar';
+
+interface Contributor {
+  id: number;
+  email: string;
+}
 
 export default function IssueForm({ params }) {
   const user_id = Cookies.getJSON('current_user').id;
   const router = useRouter();
-  const projectId = params.projectId
+  const { userId, projectId, issueId } = params;
   const [issue, setIssue] = useState({
+    id: issueId,
     tracker: '',
     subject: '',
     issue_description: '',
@@ -22,6 +27,34 @@ export default function IssueForm({ params }) {
     project_id: projectId,
     user_id: user_id,
   });
+  const [selectedAssignee, setSelectedAssignee] = useState<string[]>([]);
+  const [contributors, setContributors] = useState<Contributor[]>([]);
+
+  // fetching the project contributors to add issue assignee
+  useEffect(() => {
+    const fetchContributors = async () => {
+      try {
+        const response = await
+        fetch(`http://localhost:3000/users/${userId}/projects/${projectId}/fetchContributors`);
+        if (response.ok) {
+          const data = await response.json();
+          setContributors(data.contributors);
+        } else {
+          console.error('Failed to fetch contributors');
+        }
+      } catch (error) {
+        console.error('Error:', error.message);
+      }
+    };
+    fetchContributors();
+  }, [projectId, user_id, issueId, issue.id]);
+
+  const handleAssigneeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedOptions = Array.from(e.target.selectedOptions).map(
+      (option: HTMLOptionElement) => option.value
+    );
+    setSelectedAssignee(selectedOptions);
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -34,12 +67,16 @@ export default function IssueForm({ params }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const payload = {
+        ...issue,
+        assignee: selectedAssignee,
+      };
       const response = await fetch(`http://localhost:3000/users/${user_id}/projects/${projectId}/issues`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(issue),
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
@@ -55,7 +92,6 @@ export default function IssueForm({ params }) {
 
   return (
     <>
-      <Navbar />
       <form
         onSubmit={handleSubmit}
         className="max-w-md mx-auto mt-8 p-4 bg-white shadow-md rounded-md"
@@ -180,16 +216,20 @@ export default function IssueForm({ params }) {
           <label htmlFor='assignee' className='text-sm font-medium text-gray-600'>
             Assignee
           </label>
-          <input
-            type='text'
-            id='assignee'
-            name='assignee'
-            value={issue.assignee}
-            onChange={handleChange}
+          <select
+            id="assignee"
+            value={selectedAssignee}
+            onChange={handleAssigneeChange}
+            multiple
             className='w-full mt-2 p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300'
-          />
+          >
+            {contributors.map((contributor) => (
+              <option key={contributor.id} value={contributor.id}>
+                {contributor.first_name}
+              </option>
+            ))}
+          </select>
         </div>
-
         <div className='mb-4 flex items-center'>
           <input
             type='checkbox'

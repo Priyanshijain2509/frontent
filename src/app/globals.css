@@ -35,3 +35,9 @@ h1{
   background-color: #DAC0A3;
 /* #4F709C */
 }
+.issueShowPage{
+  border: 1px solid #bbb;
+  border-radius: 2rem;
+  padding: 1rem;
+  margin: 0.8rem;
+}

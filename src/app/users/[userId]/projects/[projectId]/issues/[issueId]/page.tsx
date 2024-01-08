@@ -1,12 +1,14 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import Navbar from "@/app/navbar";
+
+interface Contributor {
+  id: number;
+  first_name: string;
+}
 
 export default function ShowIssue({ params }) {
-  const { issueId } = params.issueId;
-  const { projectId } = params.projectId;
-  const { userId } = params.userId;
+  const { issueId, projectId, userId } = params;
   const [issue, setIssue] = useState({
     id: issueId,
     tracker: '',
@@ -20,12 +22,14 @@ export default function ShowIssue({ params }) {
     assignee: '',
     issue_resolved: false,
   });
+  const [selectedAssignee, setSelectedAssignee] = useState(issue.assignee);
+  const [contributors, setContributors] = useState<Contributor[]>([]);
 
+  // fetching the issue details
   useEffect(() => {
     const fetchIssueDetails = async () => {
       try {
-        const response = await fetch
-        (`http://localhost:3000/users/${userId}/projects/${projectId}/issues/${issueId}`, {
+        const response = await fetch(`http://localhost:3000/users/${userId}/projects/${projectId}/issues/${issueId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -48,10 +52,35 @@ export default function ShowIssue({ params }) {
     }
   }, [issueId]);
 
+  // fetching the project contributors to add issue assignee
+  useEffect(() => {
+    // Ensure that issue details are fetched before attempting to fetch contributors
+    if (issueId && issue.id) {
+      const fetchContributors = async () => {
+        try {
+          const response = await fetch(`http://localhost:3000/users/${userId}/projects/${projectId}/fetchContributors`);
+          if (response.ok) {
+            const data = await response.json();
+            setContributors(data.contributors);
+          } else {
+            console.error('Failed to fetch contributors');
+          }
+        } catch (error) {
+          console.error('Error:', error.message);
+        }
+      };
+
+      fetchContributors();
+    }
+  }, [projectId, userId, issueId, issue.id]);
+
+  const handleAssigneeChange = (e) => {
+    setSelectedAssignee(e.target.value);
+  };
+
   return (
     <>
-      <Navbar />
-      <div>
+      <div className='issueShowPage'>
         <h2>Issue Details</h2>
         <div>
           <p>ID: {issue.id}</p>
@@ -59,9 +88,16 @@ export default function ShowIssue({ params }) {
           <p>Status: {issue.issue_status}</p>
           <p>Subject: {issue.subject}</p>
           <p>Description: {issue.issue_description}</p>
-          <p>Assigned to: {issue.assignee}</p>
+          <p>Assignee: {contributors.map((contributor, index) => (
+              <span key={contributor.id}>
+                {contributor.first_name}
+                {index < contributors.length - 1 && ', '}
+              </span>
+            ))}
+          </p>
         </div>
       </div>
+
     </>
   );
 }
