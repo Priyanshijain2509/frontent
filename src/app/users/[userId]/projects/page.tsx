@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react';
-import Navbar from "@/app/navbar"
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 
@@ -45,7 +44,6 @@ export default function Project() {
 
   return (
     <>
-      <Navbar />
       {isCurrentUserPresent() ? (
         <>
           <h2>Projects</h2>
@@ -56,7 +54,7 @@ export default function Project() {
                 <p>{project.project_description}</p>
               </div>
             </Link>
-          ))} 
+          ))}
         </>
         ):(
           <h1>Sign In to View Projects!</h1>

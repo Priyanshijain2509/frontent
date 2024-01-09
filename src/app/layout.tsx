@@ -1,6 +1,7 @@
 import { UserProvider } from '@/context/UserContext';
 import './globals.css'
 import Navbar from './navbar';
+import Footer from './footer';
 
 export const metadata = {
   title: 'Next.js',
@@ -17,9 +18,10 @@ export default function RootLayout({
       <body>
         <UserProvider>
           <Navbar />
-          <div>
+          <div className='custom-container'>
             {children}
           </div>
+          <Footer />
         </UserProvider>
       </body>
     </html>

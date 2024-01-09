@@ -1,6 +1,5 @@
 "use client"
 
-import Navbar from './navbar';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 
@@ -13,7 +12,6 @@ export default function WelcomePage(){
   return (
     <>
       <div className='welcome-page'>
-        <Navbar />
         <div className='welcome-content'>
           <h2 className='welcome-heading'>Welcome on Redmine!</h2>
           <p>

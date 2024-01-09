@@ -1,11 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react';
-
-interface Contributor {
-  id: number;
-  first_name: string;
-}
+import React, { useEffect, useState } from 'react';
 
 export default function ShowIssue({ params }) {
   const { issueId, projectId, userId } = params;
@@ -19,13 +14,13 @@ export default function ShowIssue({ params }) {
     start_date: '',
     end_date: '',
     estimated_time: '',
-    assignee: '',
+    assignee: [],
     issue_resolved: false,
   });
-  const [selectedAssignee, setSelectedAssignee] = useState(issue.assignee);
-  const [contributors, setContributors] = useState<Contributor[]>([]);
 
-  // fetching the issue details
+  const [assigneeDetails, setAssigneeDetails] = useState([]);
+
+  // Fetch issue details
   useEffect(() => {
     const fetchIssueDetails = async () => {
       try {
@@ -39,6 +34,29 @@ export default function ShowIssue({ params }) {
         if (response.ok) {
           const data = await response.json();
           setIssue(data.issue);
+
+          // Fetch assignee details based on user IDs
+          const assigneeIds = data.issue.assignee;
+          const assigneePromises = assigneeIds.map(async (assigneeId) => {
+            const userResponse = await fetch(`http://localhost:3000/users/${assigneeId}`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+
+            if (userResponse.ok) {
+              const userData = await userResponse.json();
+              return userData.user;
+            } else {
+              console.error(`Failed to fetch user details for ID ${assigneeId}`);
+              return null;
+            }
+          });
+
+          // Wait for all user details to be fetched
+          const assigneeData = await Promise.all(assigneePromises);
+          setAssigneeDetails(assigneeData);
         } else {
           console.error('Failed to fetch issue details');
         }
@@ -52,34 +70,32 @@ export default function ShowIssue({ params }) {
     }
   }, [issueId]);
 
-  // fetching the project contributors to add issue assignee
-  useEffect(() => {
-    // Ensure that issue details are fetched before attempting to fetch contributors
-    if (issueId && issue.id) {
-      const fetchContributors = async () => {
-        try {
-          const response = await fetch(`http://localhost:3000/users/${userId}/projects/${projectId}/fetchContributors`);
-          if (response.ok) {
-            const data = await response.json();
-            setContributors(data.contributors);
-          } else {
-            console.error('Failed to fetch contributors');
-          }
-        } catch (error) {
-          console.error('Error:', error.message);
-        }
-      };
+  const handleIssueResolved = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/users/${userId}/projects/${projectId}/issues/${issueId}/resolve`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ issue_resolved: !issue.issue_resolved }),
+      });
 
-      fetchContributors();
+      if (response.ok) {
+        setIssue((prevIssue) => ({ ...prevIssue, issue_resolved: !prevIssue.issue_resolved }));
+      } else {
+        console.error('Failed to mark issue as resolved/unresolved');
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
     }
-  }, [projectId, userId, issueId, issue.id]);
-
-  const handleAssigneeChange = (e) => {
-    setSelectedAssignee(e.target.value);
   };
 
   return (
     <>
+      <button onClick={handleIssueResolved}>
+        {issue.issue_resolved ? 'Mark as unresolved' : 'Mark as resolved'}
+      </button>
       <div className='issueShowPage'>
         <h2>Issue Details</h2>
         <div>
@@ -88,16 +104,13 @@ export default function ShowIssue({ params }) {
           <p>Status: {issue.issue_status}</p>
           <p>Subject: {issue.subject}</p>
           <p>Description: {issue.issue_description}</p>
-          <p>Assignee: {contributors.map((contributor, index) => (
-              <span key={contributor.id}>
-                {contributor.first_name}
-                {index < contributors.length - 1 && ', '}
-              </span>
+          <p>
+            Assignee: {assigneeDetails.map((assignee) => (
+              <span key={assignee.id}>{assignee.first_name}</span>
             ))}
           </p>
         </div>
       </div>
-
     </>
   );
 }
