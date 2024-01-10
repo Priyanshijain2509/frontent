@@ -46,20 +46,35 @@ export default function Project() {
     <>
       {isCurrentUserPresent() ? (
         <>
-          <h2>Projects</h2>
-          {projects.map(project => (
-            <Link key={project.id} href={`projects/${project.id}`}>
-              <div className='project-css'>
-                <h1>{project.project_name}</h1>
-                <p>{project.project_description}</p>
-              </div>
+          <div className='flex justify-between items-center'>
+            <h2 className='flex-shrink-0'>Projects</h2>
+            <Link href={`/users/${user_id}/projects/new`} className='new-button'>
+              <svg className='h-4 w-5 inline-block' width='24' height='24'
+                viewBox='0 0 24 24' strokeWidth='2' stroke='currentColor' fill='none'
+                strokeLinecap='round' strokeLinejoin='round'>
+                <path stroke='none' d='M0 0h24v24H0z'/>
+                <line x1='12' y1='5' x2='12' y2='19' />
+                <line x1='5' y1='12' x2='19' y2='12' />
+              </svg>
+              Add Project
             </Link>
-          ))}
+          </div>
+          {projects.length === 0 ? (
+            <p className='flash-error'>No projects yet.</p>
+          ) : (
+            projects.map((project) => (
+              <Link key={project.id} href={`projects/${project.id}`}>
+                <div className='project-css'>
+                  <h1>{project.project_name}</h1>
+                  <p>{project.project_description}</p>
+                </div>
+              </Link>
+            ))
+          )}
         </>
-        ):(
-          <h1>Sign In to View Projects!</h1>
-        )
-      }
+      ) : (
+        <h1>Sign In to View Projects!</h1>
+      )}
     </>
   );
 }

@@ -94,7 +94,7 @@ export default function IssueForm({ params }) {
     <>
       <form
         onSubmit={handleSubmit}
-        className="max-w-md mx-auto mt-8 p-4 bg-white shadow-md rounded-md"
+        className='max-w-md mx-auto mt-8 p-4 bg-white shadow-md rounded-md'
       >
         <div className='mb-4'>
           <label htmlFor='tracker' className='text-sm font-medium text-gray-600'>
@@ -217,7 +217,7 @@ export default function IssueForm({ params }) {
             Assignee
           </label>
           <select
-            id="assignee"
+            id='assignee'
             value={selectedAssignee}
             onChange={handleAssigneeChange}
             multiple

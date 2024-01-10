@@ -3,8 +3,8 @@ import Link from 'next/link';
 function Download() {
   return (
     <>
-      <h3 className="text-2xl font-bold mb-4">Download</h3>
-      <h5 className="text-lg font-bold mb-2">Latest releases</h5>
+      <h3 className='text-2xl font-bold mb-4'>Download</h3>
+      <h5 className='text-lg font-bold mb-2'>Latest releases</h5>
       <p>Redmine releases are available in either .tar.gz or .zip format:</p>
       <div className='table-responsive'>
         <table className='table-auto border-collapse border border-gray-800 w-full'>
@@ -63,7 +63,7 @@ function Download() {
           </tbody>
         </table>
       </div>
-      <h5 className="text-lg font-bold mt-4">Source code</h5>
+      <h5 className='text-lg font-bold mt-4'>Source code</h5>
       <p>
         You can checkout the source code of Redmine from the Subversion repository.
         This is the preferred way to get Redmine if you want to benefit from the

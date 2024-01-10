@@ -73,12 +73,12 @@ export default function Wiki({ params }) {
       {existingWiki ? (
         <>
         <Link href={`/users/${userId}/projects/${projectId}/wikis/${existingWiki.id}/edit`}>
-          <svg className="h-5 w-5 text-blue-600 inline-block" viewBox="0 0 24 24"
-            stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-              stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>
-              <path d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
-              <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />
-              <line x1="16" y1="5" x2="19" y2="8" />
+          <svg className='h-5 w-5 text-blue-600 inline-block' viewBox='0 0 24 24'
+            stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round'
+              stroke-linejoin='round'>  <path stroke='none' d='M0 0h24v24H0z'/>
+              <path d='M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3' />
+              <path d='M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3' />
+              <line x1='16' y1='5' x2='19' y2='8' />
           </svg>
         </Link>
         <div className='wikiPage'>
@@ -87,7 +87,7 @@ export default function Wiki({ params }) {
         </div>
         </>
       ) : (
-        <form onSubmit={handleSubmit} className="max-w-xl mx-auto mt-8 p-4 bg-white shadow-md rounded-md">
+        <form onSubmit={handleSubmit} className='max-w-xl mx-auto mt-8 p-4 bg-white shadow-md rounded-md'>
           {/* Wiki form */}
           <div className='mb-4'>
             <label htmlFor='wiki_text' className='text-sm font-medium text-gray-600'>Wiki</label>

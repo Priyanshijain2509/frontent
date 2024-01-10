@@ -52,34 +52,58 @@ export default function Issue({ params }) {
 
   return (
     <>
-      <Link href={`/users/${user_id}/projects/${projectId}/projectContributor`}>Add Project Contributor</Link>
-      <Link href={`/users/${user_id}/projects/${projectId}/issues/new`}>Add Issue</Link>
       {isCurrentUserPresent() ? (
         <>
-          <h2>Issues</h2>
-          <table>
+          <div className='flex justify-between items-center'>
+            <h2 className='text-2xl font-bold'>Issues</h2>
+            <div className='flex space-x-4'>
+              <Link href={`/users/${user_id}/projects/${projectId}/projectContributor`}
+                className='new-button'>
+                <svg className='h-4 w-5 inline-block' width='24' height='24'
+                  viewBox='0 0 24 24' strokeWidth='2' stroke='currentColor' fill='none'
+                  strokeLinecap='round' strokeLinejoin='round'>
+                  <path stroke='none' d='M0 0h24v24H0z'/>
+                  <line x1='12' y1='5' x2='12' y2='19' />
+                  <line x1='5' y1='12' x2='19' y2='12' />
+                </svg>
+                Project Contributor
+              </Link>
+              <Link href={`/users/${user_id}/projects/${projectId}/issues/new`}
+                className='new-button'>
+                <svg className='h-4 w-5 inline-block' width='24' height='24'
+                  viewBox='0 0 24 24' strokeWidth='2' stroke='currentColor' fill='none'
+                  strokeLinecap='round' strokeLinejoin='round'>
+                  <path stroke='none' d='M0 0h24v24H0z'/>
+                  <line x1='12' y1='5' x2='12' y2='19' />
+                  <line x1='5' y1='12' x2='19' y2='12' />
+                </svg>
+                Add Issue
+              </Link>
+            </div>
+          </div>
+          <table className='w-full table-auto mt-4'>
             <thead>
               <tr>
-                <th>Id</th>
-                <th>Tracker</th>
-                <th>Status</th>
-                <th>Subject</th>
-                <th>Category</th>
-                <th>Updated At</th>
+                <th className='px-4 py-2'>Id</th>
+                <th className='px-4 py-2'>Tracker</th>
+                <th className='px-4 py-2'>Status</th>
+                <th className='px-4 py-2'>Subject</th>
+                <th className='px-4 py-2'>Category</th>
+                <th className='px-4 py-2'>Updated At</th>
               </tr>
             </thead>
             <tbody>
               {issues.map((issue) => (
-                <tr key={issue.id}>
-                  <Link href={`issues/${issue.id}`}>
-                    <td>{issue.id}</td>
-                    <td>{issue.tracker}</td>
-                    <td>{/* status here */}</td>
-                    <td>{issue.subject}</td>
-                    <td>{issue.category}</td>
-                    <td>{new Date(issue.updated_at).toLocaleString()}</td>
-                  </Link>
-                </tr>
+                <Link key={issue.id} href={`issues/${issue.id}`}>
+                  <tr className='hover:bg-gray-100 cursor-pointer'>
+                    <td className='px-4 py-2'>{issue.id}</td>
+                    <td className='px-4 py-2'>{issue.tracker}</td>
+                    <td className='px-4 py-2'>{/* status here */}</td>
+                    <td className='px-4 py-2'>{issue.subject}</td>
+                    <td className='px-4 py-2'>{issue.category}</td>
+                    <td className='px-4 py-2'>{new Date(issue.updated_at).toLocaleString()}</td>
+                  </tr>
+                </Link>
               ))}
             </tbody>
           </table>

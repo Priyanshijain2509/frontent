@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Cookies from 'js-cookie';
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
 export default function ProjectForm() {
   const user_id = Cookies.getJSON('current_user').id;
@@ -51,7 +51,7 @@ export default function ProjectForm() {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-8 p-4 bg-white shadow-md rounded-md">
+      <form onSubmit={handleSubmit} className='max-w-md mx-auto mt-8 p-4 bg-white shadow-md rounded-md'>
         <div className='mb-4'>
           <label htmlFor='project_name' className='text-sm font-medium text-gray-600'>Project Name</label>
           <input

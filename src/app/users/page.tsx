@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 export default function Users() {
   const router = useRouter();

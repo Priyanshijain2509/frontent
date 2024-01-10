@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function ProjectContributor({ params }) {
   const [searchInput, setSearchInput] = useState('');
@@ -104,9 +105,9 @@ export default function ProjectContributor({ params }) {
       });
 
       if (response.ok) {
-        // Fetch the updated list of contributors from the server
         const updatedContributors = await fetchUpdatedContributors();
         setSelectedUsers(updatedContributors);
+        setSearchInput('');
       } else {
         const data = await response.json();
         setError(data.errors ? data.errors.join(', ') : 'Failed to add contributor');
@@ -147,56 +148,44 @@ export default function ProjectContributor({ params }) {
 
   return (
     <>
-      <h2>Project Contributor</h2>
-      {error && <div style={{ color: 'red' }}>{error}</div>} {/* Display error message */}
-      <div>
-        <p>Contributors:</p>
-        <ul>
-          {selectedUsers.map((contributor) => (
-            <li key={contributor.id}>
-              {contributor.first_name}
-              <button onClick={() => handleRemoveUser(contributor)}>
-                <svg className="h-4 w-4 text-red-500" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <br />
-      <div>
-        <label htmlFor="searchInput">Search by Email:</label>
-        <input
-          type="text"
-          id="searchInput"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-        />
+  <div className='mb-4'>
+    <h2 className='text-2xl font-bold'>Project Contributor</h2>
+    {error && <div className='text-red-500'>{error}</div>}
+  </div>
 
-        <ul>
-          {users.map((user) => (
-            <li key={user.id} onClick={() => handleUserSelect(user)}>
-              {user.email}
-            </li>
-          ))}
-        </ul>
+  <div className='mb-8'>
+    <p className='text-lg font-semibold mb-2'>Contributors:</p>
+    <ul className='list-disc pl-4'>
+      {selectedUsers.map((contributor) => (
+        <li key={contributor.id}>
+          <span>{contributor.first_name}</span>
+          <button onClick={() => handleRemoveUser(contributor)}>
+            <svg className='h-4 w-5 text-red-500' viewBox='0 0 24 24' fill='none'
+              stroke='currentColor' strokeWidth='2' strokeLinecap='round'
+              strokeLinejoin='round'>
+              <line x1='18' y1='6' x2='6' y2='18' />
+              <line x1='6' y1='6' x2='18' y2='18' />
+            </svg>
+          </button>
+        </li>
+      ))}
+    </ul>
+  </div>
 
-        <div>
-          <p>Selected Users:</p>
-          <ul>
-            {selectedUsers.map((user) => (
-              <li key={user.id} onClick={() => handleRemoveUser(user)}>
-                {user.email}
-              </li>
-            ))}
-          </ul>
-        </div>
+  <div className='mb-8'>
+    <label htmlFor='searchInput' className='block text-lg mb-2'>Search by Email:</label>
+    <input
+      type='text'
+      id='searchInput'
+      value={searchInput}
+      onChange={(e) => setSearchInput(e.target.value)}
+      className='border border-gray-300 p-2 rounded-md'
+    />
+    <Link href={`/users/${userId}/projects/${projectId}/issues`} className='new-button'>
+      Done
+    </Link>
+  </div>
+</>
 
-      </div>
-    </>
   );
 }

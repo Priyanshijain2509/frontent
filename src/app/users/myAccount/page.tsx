@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect, ChangeEvent, FormEvent } from "react";
-import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 
 interface UserData {
   firstName: string;
@@ -16,13 +16,13 @@ interface UserData {
 
 export default function MyAccount() {
   const [userData, setUserData] = useState<UserData>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    passwordConfirmation: "",
-    language: "English",
-    nickName: "",
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    passwordConfirmation: '',
+    language: 'English',
+    nickName: '',
   });
 
   const isCurrentUserPresent = () => {
@@ -39,9 +39,9 @@ export default function MyAccount() {
         firstName: currentUser.first_name,
         lastName: currentUser.last_name,
         email: currentUser.email,
-        password: "",
-        passwordConfirmation: "",
-        language: currentUser.language || "English",
+        password: '',
+        passwordConfirmation: '',
+        language: currentUser.language || 'English',
         nickName: currentUser.nick_name ,
       });
     }
@@ -54,7 +54,7 @@ export default function MyAccount() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const id = Cookies.getJSON("current_user").id;
+    const id = Cookies.getJSON('current_user').id;
     const formData = {
       user_id: id,
       ...userData,
@@ -62,22 +62,22 @@ export default function MyAccount() {
 
     try {
       const response = await fetch(`http://localhost:3000/users/${id}/update`, {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           'Authorization': Cookies.get('auth_token')
         },
         body: JSON.stringify(formData),
       });
 
       if (response.ok) {
-        console.log("User data updated successfully");
-        router.push("/home");
+        console.log('User data updated successfully');
+        router.push('/home');
       } else {
-        console.error("User data update failed");
+        console.error('User data update failed');
       }
     } catch (error) {
-      console.error("Error during user data update:", error);
+      console.error('Error during user data update:', error);
     }
   };
 
@@ -90,8 +90,8 @@ export default function MyAccount() {
             <label>
               First Name:
               <input
-                type="text"
-                name="firstName"
+                type='text'
+                name='firstName'
                 value={userData.firstName}
                 onChange={handleChange}
               />
@@ -100,8 +100,8 @@ export default function MyAccount() {
             <label>
               Last Name:
               <input
-                type="text"
-                name="lastName"
+                type='text'
+                name='lastName'
                 value={userData.lastName}
                 onChange={handleChange}
               />
@@ -110,8 +110,8 @@ export default function MyAccount() {
             <label>
               Email:
               <input
-                type="email"
-                name="email"
+                type='email'
+                name='email'
                 value={userData.email}
                 onChange={handleChange}
               />
@@ -120,8 +120,8 @@ export default function MyAccount() {
             <label>
               Password:
               <input
-                type="password"
-                name="password"
+                type='password'
+                name='password'
                 value={userData.password}
                 onChange={handleChange}
               />
@@ -130,8 +130,8 @@ export default function MyAccount() {
             <label>
               Confirm Password:
               <input
-                type="password"
-                name="passwordConfirmation"
+                type='password'
+                name='passwordConfirmation'
                 value={userData.passwordConfirmation}
                 onChange={handleChange}
               />
@@ -139,19 +139,19 @@ export default function MyAccount() {
 
             <label>
               Language:
-              <select name="language" value={userData.language} onChange={handleChange}>
-                <option value="English">English</option>
-                <option value="Hindi">Hindi</option>
+              <select name='language' value={userData.language} onChange={handleChange}>
+                <option value='English'>English</option>
+                <option value='Hindi'>Hindi</option>
               </select>
             </label>
 
             <label>
               Nick Name:
-              <input type="text" name="nickName" value={userData.nickName}
+              <input type='text' name='nickName' value={userData.nickName}
                 onChange={handleChange} />
             </label>
 
-            <button type="submit">Update My Account</button>
+            <button type='submit'>Update My Account</button>
           </form>
         </div>
         ) : (

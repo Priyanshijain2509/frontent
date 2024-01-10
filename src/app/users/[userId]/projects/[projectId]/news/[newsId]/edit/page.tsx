@@ -66,7 +66,7 @@ export default function NewsForm({ params }) {
   return (
     <>
       <h1>News</h1>
-      <form onSubmit={handleSubmit} className="max-w-xl mx-auto mt-8 p-4 bg-white shadow-md rounded-md">
+      <form onSubmit={handleSubmit} className='max-w-xl mx-auto mt-8 p-4 bg-white shadow-md rounded-md'>
         <div className='mb-4'>
           <label htmlFor='news_title' className='text-sm font-medium text-gray-600'>News Title</label>
           <input

@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import Cookies from 'js-cookie';
 import Link from 'next/link';
@@ -30,13 +30,13 @@ export default function WelcomePage(){
             and cross-database and supports 49 languages.
           </p>
           {isCurrentUserPresent() ? (
-            <h1>Logged In!</h1>
+            <h2></h2>
           ) : (
-            <div className="flex justify-center items-center h-screen">
-              <div className="bg-green-50 hover:bg-green-100 focus:outline-none
+            <div className='flex justify-center items-center h-full'>
+              <div className='bg-green-50 hover:bg-green-100 focus:outline-none
               focus:ring text-green-600 font-bold py-2 px-4 rounded-md shadow-md
-              transition duration-300 ease-in-out">
-                <Link href='/users/sign_up'>Register</Link>
+              transition duration-300 ease-in-out'>
+                <Link href='/users/signUp'>Register</Link>
               </div>
             </div>
           )}
