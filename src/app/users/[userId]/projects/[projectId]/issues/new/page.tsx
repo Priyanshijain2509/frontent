@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
+import UserContext from '@/context/UserContext';
 
 interface Contributor {
   id: number;
@@ -29,6 +30,12 @@ export default function IssueForm({ params }) {
   });
   const [selectedAssignee, setSelectedAssignee] = useState<string[]>([]);
   const [contributors, setContributors] = useState<Contributor[]>([]);
+
+  // set this to access the project details in navbar
+  const { setProjectInfo } = useContext(UserContext);
+  useEffect(() => {
+    setProjectInfo({ projectId, userId });
+  }, [params, setProjectInfo]);
 
   // fetching the project contributors to add issue assignee
   useEffect(() => {

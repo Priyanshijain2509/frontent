@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import Cookies from 'js-cookie';
 
-
 interface CommentFormProps {
   onSubmit: (commentData: CommentData) => void;
   project_id: number;
@@ -19,13 +18,13 @@ interface CommentData {
   news_id: number;
 }
 
-const CommentForm: React.FC<CommentFormProps> = ({ onSubmit, project_id, user_id }) => {
+const CommentForm: React.FC<CommentFormProps> = ({ onSubmit, project_id, user_id, news_id }) => {
   const [commentData, setCommentData] = useState<CommentData>({
     comment_body: '',
     comment_added_by: Cookies.getJSON('current_user').first_name,
     project_id: project_id,
     user_id: user_id,
-    news_id: 0
+    news_id: news_id
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,13 +39,14 @@ const CommentForm: React.FC<CommentFormProps> = ({ onSubmit, project_id, user_id
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Comment:
+    <form onSubmit={handleSubmit} className='max-w-md p-4 bg-white rounded shadow-md'>
+      <label className='block mb-4'>
         <textarea
           name='comment_body'
           value={commentData.comment_body}
           onChange={handleChange}
+          className='form-textarea mt-1 block w-full border-2 rounded'
+          rows='3'
         />
       </label>
 
@@ -55,8 +55,15 @@ const CommentForm: React.FC<CommentFormProps> = ({ onSubmit, project_id, user_id
       <input type='hidden' name='user_id' value={commentData.user_id} />
       <input type='hidden' name='news_id' value={commentData.news_id} />
 
-      <button type='submit'>Submit Comment</button>
+      <button
+        type='submit'
+        className='bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700
+        focus:outline-none focus:shadow-outline-blue active:bg-blue-800'
+      >
+        Submit Comment
+      </button>
     </form>
+
   );
 };
 

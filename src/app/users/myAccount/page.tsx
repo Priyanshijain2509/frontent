@@ -84,76 +84,97 @@ export default function MyAccount() {
   return (
     <>
       { isCurrentUserPresent() ? (
-        <div>
-          <h1>My Account</h1>
-          <form onSubmit={handleSubmit}>
-            <label>
-              First Name:
-              <input
-                type='text'
-                name='firstName'
-                value={userData.firstName}
-                onChange={handleChange}
-              />
-            </label>
+        <div className="max-w-md mx-auto mt-8 p-8 bg-white rounded shadow-md">
+        <h1 className="text-2xl font-bold mb-4">My Account</h1>
+        <form onSubmit={handleSubmit}>
+          <label className="block mb-4">
+            <span className="text-gray-700">First Name:</span>
+            <input
+              type="text"
+              name="firstName"
+              value={userData.firstName}
+              onChange={handleChange}
+              className="form-input border border-gray-300 rounded-md mt-1 block w-full"
+            />
+          </label>
 
-            <label>
-              Last Name:
-              <input
-                type='text'
-                name='lastName'
-                value={userData.lastName}
-                onChange={handleChange}
-              />
-            </label>
+          <label className="block mb-4">
+            <span className="text-gray-700">Last Name:</span>
+            <input
+              type="text"
+              name="lastName"
+              value={userData.lastName}
+              onChange={handleChange}
+              className="form-input border border-gray-300 rounded-md mt-1 block w-full"
+            />
+          </label>
 
-            <label>
-              Email:
-              <input
-                type='email'
-                name='email'
-                value={userData.email}
-                onChange={handleChange}
-              />
-            </label>
+          <label className="block mb-4">
+            <span className="text-gray-700">Email:</span>
+            <input
+              type="email"
+              name="email"
+              value={userData.email}
+              onChange={handleChange}
+              className="form-input border border-gray-300 rounded-md mt-1 block w-full"
+            />
+          </label>
 
-            <label>
-              Password:
-              <input
-                type='password'
-                name='password'
-                value={userData.password}
-                onChange={handleChange}
-              />
-            </label>
+          <label className="block mb-4">
+            <span className="text-gray-700">Password:</span>
+            <input
+              type="password"
+              name="password"
+              value={userData.password}
+              onChange={handleChange}
+              className="form-input border border-gray-300 rounded-md mt-1 block w-full"
+            />
+          </label>
 
-            <label>
-              Confirm Password:
-              <input
-                type='password'
-                name='passwordConfirmation'
-                value={userData.passwordConfirmation}
-                onChange={handleChange}
-              />
-            </label>
+          <label className="block mb-4">
+            <span className="text-gray-700">Confirm Password:</span>
+            <input
+              type="password"
+              name="passwordConfirmation"
+              value={userData.passwordConfirmation}
+              onChange={handleChange}
+              className="form-input border border-gray-300 rounded-md mt-1 block w-full"
+            />
+          </label>
 
-            <label>
-              Language:
-              <select name='language' value={userData.language} onChange={handleChange}>
-                <option value='English'>English</option>
-                <option value='Hindi'>Hindi</option>
-              </select>
-            </label>
+          <label className="block mb-4">
+            <span className="text-gray-700">Language:</span>
+            <select
+              name="language"
+              value={userData.language}
+              onChange={handleChange}
+              className="form-select mt-1 block w-full"
+            >
+              <option value="English">English</option>
+              <option value="Hindi">Hindi</option>
+            </select>
+          </label>
 
-            <label>
-              Nick Name:
-              <input type='text' name='nickName' value={userData.nickName}
-                onChange={handleChange} />
-            </label>
+          <label className="block mb-4">
+            <span className="text-gray-700">Nick Name:</span>
+            <input
+              type="text"
+              name="nickName"
+              value={userData.nickName}
+              onChange={handleChange}
+              className="form-input border border-gray-300 rounded-md mt-1 block w-full"
+            />
+          </label>
 
-            <button type='submit'>Update My Account</button>
-          </form>
-        </div>
+          <button
+            type="submit"
+            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+          >
+            Update My Account
+          </button>
+        </form>
+      </div>
+
         ) : (
         <div>
           <h1>not logged in!</h1>

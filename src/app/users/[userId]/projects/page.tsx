@@ -18,6 +18,7 @@ export default function Project() {
   const [projects, setProjects] = useState<Project[]>([]);
   const user_id = Cookies.getJSON('current_user').id;
 
+  // fetching the projects
   useEffect(() => {
     const fetchProjects = async () => {
       try {

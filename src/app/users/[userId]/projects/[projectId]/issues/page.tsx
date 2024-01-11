@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
+import UserContext from '@/context/UserContext';
 
 interface Issue {
   id: number;
@@ -23,13 +24,20 @@ export default function Issue({ params }) {
   };
 
   const [issues, setIssues] = useState<Issue[]>([]);
-  const user_id = Cookies.getJSON('current_user').id;
+  const userId = Cookies.getJSON('current_user').id;
   const projectId = params.projectId;
 
+  // set this to access the project details in navbar
+  const { setProjectInfo } = useContext(UserContext);
+  useEffect(() => {
+    setProjectInfo({ projectId, userId });
+  }, [params, setProjectInfo]);
+  
   useEffect(() => {
     const fetchIssues = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/users/${user_id}/projects/${projectId}/issues`, {
+        const response = await fetch(
+          `http://localhost:3000/users/${userId}/projects/${projectId}/issues`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -48,7 +56,7 @@ export default function Issue({ params }) {
     };
 
     fetchIssues();
-  }, [user_id]);
+  }, [userId]);
 
   return (
     <>
@@ -57,7 +65,7 @@ export default function Issue({ params }) {
           <div className='flex justify-between items-center'>
             <h2 className='text-2xl font-bold'>Issues</h2>
             <div className='flex space-x-4'>
-              <Link href={`/users/${user_id}/projects/${projectId}/projectContributor`}
+              <Link href={`/users/${userId}/projects/${projectId}/projectContributor`}
                 className='new-button'>
                 <svg className='h-4 w-5 inline-block' width='24' height='24'
                   viewBox='0 0 24 24' strokeWidth='2' stroke='currentColor' fill='none'
@@ -68,7 +76,7 @@ export default function Issue({ params }) {
                 </svg>
                 Project Contributor
               </Link>
-              <Link href={`/users/${user_id}/projects/${projectId}/issues/new`}
+              <Link href={`/users/${userId}/projects/${projectId}/issues/new`}
                 className='new-button'>
                 <svg className='h-4 w-5 inline-block' width='24' height='24'
                   viewBox='0 0 24 24' strokeWidth='2' stroke='currentColor' fill='none'

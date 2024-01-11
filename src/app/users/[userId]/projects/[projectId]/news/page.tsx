@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
+import UserContext from '@/context/UserContext';
 
 interface News {
   id: number;
@@ -33,6 +34,12 @@ export default function News({ params }) {
   };
   const { userId, projectId } = params;
   const [news, setNews] = useState<News[]>([]);
+
+  // set this to access the project details in navbar
+  const { setProjectInfo } = useContext(UserContext);
+  useEffect(() => {
+    setProjectInfo({ projectId, userId });
+  }, [params, setProjectInfo]);
 
   useEffect(() => {
     const fetchNews = async () => {

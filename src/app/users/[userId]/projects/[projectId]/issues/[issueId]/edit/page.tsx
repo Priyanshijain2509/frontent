@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent, useContext } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
+import UserContext from '@/context/UserContext';
 
 interface IssueData {
   tracker: string;
@@ -37,6 +38,12 @@ export default function editIssueForm({ params }){
     const currentUser = Cookies.getJSON('current_user');
     return currentUser !== undefined;
   };
+
+  // set this to access the project details in navbar
+  const { setProjectInfo } = useContext(UserContext);
+  useEffect(() => {
+    setProjectInfo({ projectId, userId });
+  }, [params, setProjectInfo]);
 
   const router = useRouter();
 

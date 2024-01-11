@@ -5,6 +5,7 @@
 /* custom css */
 .custom-container{
   margin: 2rem;
+  margin-top: 3rem;
 }
 .welcome-heading{
   text-align: center;
@@ -15,6 +16,7 @@
 .welcome-content{
   padding: 1.5rem;
   text-align: justify;
+  margin: 2rem;
 }
 h1{
   font-size: 1.5rem;
@@ -37,10 +39,15 @@ h3{
 }
 .ele-navbar{
   margin: 0.3rem;
+  font-weight: 550;
 }
 .second-navbar{
   color: #1f4172;
-  background-color: #DAC0A3;
+  background-color: #bae6fd;
+  margin-top: 1rem;
+  padding-bottom: 0.3rem;
+  padding-top: 1rem;
+  padding-left: 1rem;
 /* #4F709C */
 }
 .issueShowPage{
@@ -162,4 +169,13 @@ h2{
   border: 1px solid #02a569;
   border-radius: 0.375rem;
   cursor: pointer;
+}
+.nav-li{
+  margin-right: 3rem;
+  margin-bottom: 0;
+  margin-top: 0.5rem;;
+}
+.comments{
+  font-size: 0.8rem;
+  padding-left: 3rem;
 }

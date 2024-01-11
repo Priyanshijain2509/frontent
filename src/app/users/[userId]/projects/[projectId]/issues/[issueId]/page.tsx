@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import UserContext from '@/context/UserContext';
 
 export default function ShowIssue({ params }) {
   const { issueId, projectId, userId } = params;
@@ -19,6 +20,12 @@ export default function ShowIssue({ params }) {
   });
 
   const [assigneeDetails, setAssigneeDetails] = useState([]);
+
+  // set this to access the project details in navbar
+  const { setProjectInfo } = useContext(UserContext);
+  useEffect(() => {
+    setProjectInfo({ projectId, userId });
+  }, [params, setProjectInfo]);
 
   // Fetch issue details
   useEffect(() => {

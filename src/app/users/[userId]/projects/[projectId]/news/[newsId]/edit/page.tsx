@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
+import UserContext from '@/context/UserContext';
 
 export default function NewsForm({ params }) {
   const router = useRouter();
@@ -19,6 +19,13 @@ export default function NewsForm({ params }) {
       [name]: value,
     }));
   };
+
+  // set this to access the project details in navbar
+  const { setProjectInfo } = useContext(UserContext);
+  useEffect(() => {
+    setProjectInfo({ projectId, userId });
+  }, [params, setProjectInfo]);
+
   // to fetch the previous news data to edit
   useEffect(() => {
     const fetchNewsDetails = async () => {

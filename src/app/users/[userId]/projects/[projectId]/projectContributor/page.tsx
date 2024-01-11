@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import UserContext from '@/context/UserContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -12,6 +13,12 @@ export default function ProjectContributor({ params }) {
   const { userId, projectId, issueId } = params;
 
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+
+  // set this to access the project details in navbar
+  const { setProjectInfo } = useContext(UserContext);
+  useEffect(() => {
+    setProjectInfo({ projectId, userId });
+  }, [params, setProjectInfo]);
 
   // Fetch and set the initially assigned users when the page loads
   useEffect(() => {

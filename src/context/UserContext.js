@@ -5,11 +5,10 @@ import React, { createContext, useState } from 'react';
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  // const [user, setUser] = useState(null);
-  // const [token, setToken] = useState(null);
+  const [projectInfo, setProjectInfo] = useState(null);
 
   return (
-    <UserContext.Provider value={{  }}>
+    <UserContext.Provider value={{ projectInfo, setProjectInfo }}>
       {children}
     </UserContext.Provider>
   );

@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent, useContext } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
+import UserContext from '@/context/UserContext';
 
 interface WikiData {
   wiki_text: string;
@@ -23,6 +24,12 @@ export default function EditWiki({ params }){
   };
 
   const router = useRouter();
+
+  // set this to access the project details in navbar
+  const { setProjectInfo } = useContext(UserContext);
+  useEffect(() => {
+    setProjectInfo({ projectId, userId });
+  }, [params, setProjectInfo]);
 
   // to fetch the previous wiki data to edit
   useEffect(() => {

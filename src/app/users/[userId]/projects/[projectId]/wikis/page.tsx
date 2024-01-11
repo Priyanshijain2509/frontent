@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import UserContext from '@/context/UserContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -15,6 +16,13 @@ export default function Wiki({ params }) {
   const [existingWiki, setExistingWiki] = useState(null);
   const [projectName, setProjectName] = useState('');
 
+  // set this to access the project details in navbar
+  const { setProjectInfo } = useContext(UserContext);
+  useEffect(() => {
+    setProjectInfo({ projectId, userId });
+  }, [params, setProjectInfo]);
+
+  // fetch theb existing wikis
   useEffect(() => {
     const checkExistingWiki = async () => {
       try {

@@ -1,9 +1,9 @@
 //show News
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Cookies from 'js-cookie';
-import Link from 'next/link';
+import UserContext from '@/context/UserContext';
 import CommentForm from './comments/new/page';
 
 interface News {
@@ -44,6 +44,13 @@ export default function News({ params }) {
   const [news, setNews] = useState<News | null>(null);
   const [showCommentForm, setShowCommentForm] = useState<boolean>(false);
 
+  // set this to access the project details in navbar
+  const { setProjectInfo } = useContext(UserContext);
+  useEffect(() => {
+    setProjectInfo({ projectId, userId });
+  }, [params, setProjectInfo]);
+
+  // fetch the news details
   useEffect(() => {
     const fetchNews = async () => {
       try {
@@ -161,7 +168,7 @@ export default function News({ params }) {
             <p className='newsContent'>{news?.news_content}</p>
           </div>
 
-          <h2>Comments:</h2>
+          <h3>Comments:</h3>
           <button onClick={() => setShowCommentForm(!showCommentForm)}>Add a Comment</button>
 
           {comments.length > 0 && (
@@ -169,7 +176,8 @@ export default function News({ params }) {
               {comments.map((comment) => (
                 <div key={comment.id}>
                   <p>{comment.comment_body}</p>
-                  <p>Added by {comment.comment_added_by}, {timeDifference(new Date(),
+                  <p className='comments'>~Added by {comment.comment_added_by},
+                  {timeDifference(new Date(),
                   new Date(comment.created_at))}</p>
                 </div>
               ))}
@@ -178,7 +186,8 @@ export default function News({ params }) {
 
           {showCommentForm && (
             <CommentForm
-              onSubmit={submitComment} project_id={projectId} user_id={userId} news_id={newsId}
+              onSubmit={submitComment} project_id={projectId} user_id={userId}
+              news_id={newsId}
             />
           )}
 
