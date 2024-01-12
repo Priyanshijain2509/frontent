@@ -15,7 +15,10 @@ export default function Navbar() {
     const currentUser = Cookies.getJSON('current_user');
     return currentUser !== undefined;
   };
-  const user_id = Cookies.getJSON('current_user').id;
+
+  const currentUser = Cookies.getJSON('current_user');
+  const user_id = currentUser ? currentUser.id : null;
+
   // context api to fetch project id
   const {projectInfo} = useContext(UserContext);
 
@@ -77,7 +80,6 @@ export default function Navbar() {
         }
       } else {
         console.log('Current user is not present in cookies.');
-        router.push('/products');
       }
     } catch (error) {
       console.error('Error during logout:', error);

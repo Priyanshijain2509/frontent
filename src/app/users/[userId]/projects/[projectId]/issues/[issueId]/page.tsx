@@ -110,7 +110,9 @@ export default function ShowIssue({ params }) {
           <p>Tracker: {issue.tracker}</p>
           <p>Status: {issue.issue_status}</p>
           <p>Subject: {issue.subject}</p>
-          <p>Description: {issue.issue_description}</p>
+          <p>Description:
+            <div dangerouslySetInnerHTML={{ __html: issue.issue_description.body }} />
+          </p>
           <p>
             Assignee: {assigneeDetails.map((assignee) => (
               <span key={assignee.id}>{assignee.first_name}</span>

@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import UserContext from '@/context/UserContext';
+import JoditEditor from 'jodit-react';
 
 interface Contributor {
   id: number;
@@ -63,12 +64,23 @@ export default function IssueForm({ params }) {
     setSelectedAssignee(selectedOptions);
   };
 
+  // For Rich Text Editor
+  const editor = useRef(null);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setIssue((prevIssue) => ({
-      ...prevIssue,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
+
+    if (name === 'issue_description') {
+      setIssue((prevIssue) => ({
+        ...prevIssue,
+        [name]: value,
+      }));
+    } else {
+      setIssue((prevIssue) => ({
+        ...prevIssue,
+        [name]: type === 'checkbox' ? checked : value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {

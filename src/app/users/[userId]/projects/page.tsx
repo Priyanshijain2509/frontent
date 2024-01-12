@@ -16,7 +16,8 @@ export default function Project() {
     return currentUser !== undefined;
   };
   const [projects, setProjects] = useState<Project[]>([]);
-  const user_id = Cookies.getJSON('current_user').id;
+  const currentUser = Cookies.getJSON('current_user');
+  const user_id = currentUser ? currentUser.id : null;
 
   // fetching the projects
   useEffect(() => {
@@ -67,7 +68,7 @@ export default function Project() {
               <Link key={project.id} href={`projects/${project.id}`}>
                 <div className='project-css'>
                   <h1>{project.project_name}</h1>
-                  <p>{project.project_description}</p>
+                  <div dangerouslySetInnerHTML={{ __html: project.project_description.body }} />
                 </div>
               </Link>
             ))

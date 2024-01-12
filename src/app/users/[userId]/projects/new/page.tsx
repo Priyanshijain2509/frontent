@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
+import JoditEditor from 'jodit-react';
 
 export default function ProjectForm() {
   const user_id = Cookies.getJSON('current_user').id;
@@ -18,12 +19,23 @@ export default function ProjectForm() {
     user_id: user_id,
   });
 
+  // For Rich Text Editor
+  const editor = useRef(null);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setProject((prevProject) => ({
-      ...prevProject,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
+
+    if (name === 'project_description') {
+      setProject((prevProject) => ({
+        ...prevProject,
+        [name]: value,
+      }));
+    } else {
+      setProject((prevProject) => ({
+        ...prevProject,
+        [name]: type === 'checkbox' ? checked : value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -66,17 +78,18 @@ export default function ProjectForm() {
 
         <div className='mb-4'>
           <label htmlFor='project_description' className='text-sm font-medium text-gray-600'>Project Description</label>
-          <textarea
+          <JoditEditor
+            ref={editor}
             id='project_description'
             name='project_description'
             value={project.project_description}
-            onChange={handleChange}
+            onChange={(content) => handleChange({ target: { name: 'project_description', value: content } })}
             className='w-full mt-2 p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300'
           />
         </div>
 
         <div className='mb-4'>
-          <label htmlFor='identifier' className='text-sm font-medium text-gray-600'>Identifier</label>
+          <label htmlFor='identifier' className='text-sm font-medium text-gray-600'>Project Identifier</label>
           <input
             type='text'
             id='identifier'
