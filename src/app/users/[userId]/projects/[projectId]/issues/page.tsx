@@ -32,7 +32,7 @@ export default function Issue({ params }) {
   useEffect(() => {
     setProjectInfo({ projectId, userId });
   }, [params, setProjectInfo]);
-  
+
   useEffect(() => {
     const fetchIssues = async () => {
       try {
@@ -89,32 +89,27 @@ export default function Issue({ params }) {
               </Link>
             </div>
           </div>
-          <table className='w-full table-auto mt-4'>
-            <thead>
-              <tr>
-                <th className='px-4 py-2'>Id</th>
-                <th className='px-4 py-2'>Tracker</th>
-                <th className='px-4 py-2'>Status</th>
-                <th className='px-4 py-2'>Subject</th>
-                <th className='px-4 py-2'>Category</th>
-                <th className='px-4 py-2'>Updated At</th>
-              </tr>
-            </thead>
-            <tbody>
-              {issues.map((issue) => (
-                <Link key={issue.id} href={`issues/${issue.id}`}>
-                  <tr className='hover:bg-gray-100 cursor-pointer'>
-                    <td className='px-4 py-2'>{issue.id}</td>
-                    <td className='px-4 py-2'>{issue.tracker}</td>
-                    <td className='px-4 py-2'>{/* status here */}</td>
-                    <td className='px-4 py-2'>{issue.subject}</td>
-                    <td className='px-4 py-2'>{issue.category}</td>
-                    <td className='px-4 py-2'>{new Date(issue.updated_at).toLocaleString()}</td>
-                  </tr>
-                </Link>
-              ))}
-            </tbody>
-          </table>
+          <div className='flex flex-wrap h-80 overflow-y-auto'>
+            {issues.map((issue) => (
+              <Link key={issue.id} href={`issues/${issue.id}`}>
+                <div className='w-48 border border-gray-300 rounded-md p-4 mb-4
+                mr-4 h-full transition-transform transform hover:scale-105'>
+                  <h2 className='text-xl font-bold mb-2'>{issue.subject}</h2>
+                  <div className='flex justify-between items-center mb-2'>
+                    <span className='text-sm text-gray-600'>{issue.tracker}</span>
+                    <span className='text-sm text-gray-600'>{issue.category}</span>
+                  </div>
+                  <div className='flex justify-between items-center'>
+                    <span className='text-sm text-gray-600'>
+                      {new Date(issue.updated_at).toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+
         </>
       ) : (
         <h1>Sign In to View Issues!</h1>
